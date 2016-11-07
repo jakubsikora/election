@@ -17,14 +17,19 @@
         <div class="col-lg-8 col-lg-offset-2">
           <div class="panel panel-default">
             <div class="panel-body">
-              <h3>Cast your vote</h3>
-              <p>
-                <a class='btn' @click="addClintonVote"><img src='./assets/hex-clinton.png' width=100 /></a>
-                <span>or</span>
-                <a class='btn' @click="addTrumpVote"><img src='./assets/hex-trump.png' width=100 /></a>
-              </p>
-              <div>
-                <div class="g-recaptcha" data-sitekey="6LeZSAsUAAAAAKL0L-rbZRzJ-DGEwuz2gtxxZLAj"></div>
+              <div v-if="!voted">
+                <h3>Cast your vote</h3>
+                <p>
+                  <a class='btn' @click="addClintonVote"><img src='./assets/hex-clinton.png' width=100 /></a>
+                  <span>or</span>
+                  <a class='btn' @click="addTrumpVote"><img src='./assets/hex-trump.png' width=100 /></a>
+                </p>
+                <div>
+                  <!-- <div class="g-recaptcha" data-sitekey="6LfqSgsUAAAAAC4TA_XjoxLIQYONmUSXTzACb7VJ"></div> -->
+                </div>
+              </div>
+              <div v-else>
+                <h3>You already voted.</h3>
               </div>
             </div>
           </div>
@@ -63,6 +68,7 @@ import firebase from 'firebase';
 import cookies from 'browser-cookies';
 import Chart from 'chart.js';
 import axios from 'axios';
+import 'whatwg-fetch';
 
 // explicit installation required in module environments
 Vue.use(VueFire);
@@ -94,23 +100,26 @@ export default {
       this.addVote('clinton');
     },
     addVote(candidate) {
-      this.validate().then(() => {
-        this.voted = true;
-        this.setStorage();
-        votesRef.push(Object.assign({}, { candidate }, this.client));
-      })
-      .catch((err) => {
-        // console.log(err);
-      });
+      this.voted = true;
+      this.setStorage();
+      votesRef.push(Object.assign({}, { candidate }, this.client));
     },
     validate() {
       const recaptchaResponse = document
         .querySelector('.g-recaptcha-response').value;
 
       if (recaptchaResponse) {
-        return axios.post('https://www.google.com/recaptcha/api/siteverify', {
-          secret: '6LeZSAsUAAAAANGMs9vrtw-r91r1Eo_aslNaRhuE',
-          response: recaptchaResponse,
+        return fetch('https://www.google.com/recaptcha/api/siteverify', {
+          credentials: 'include',
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            secret: '6LfqSgsUAAAAANCrfZfLZaPC5y2K-5vKlwP_Wlcl',
+            response: recaptchaResponse,
+          }),
         })
         .then(response => response);
       }

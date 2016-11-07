@@ -45,5 +45,6 @@ module.exports = {
     'window': false,
     'localStorage': false,
     'document': false,
+    'fetch': false
   }
 };
