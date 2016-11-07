@@ -24,7 +24,7 @@
                 <a class='btn' @click="addTrumpVote"><img src='./assets/hex-trump.png' width=100 /></a>
               </p>
               <div>
-                <div class="g-recaptcha" data-sitekey="6LfqSgsUAAAAAC4TA_XjoxLIQYONmUSXTzACb7VJ"></div>
+                <div class="g-recaptcha" data-sitekey="6LeZSAsUAAAAAKL0L-rbZRzJ-DGEwuz2gtxxZLAj"></div>
               </div>
             </div>
           </div>
@@ -109,7 +109,7 @@ export default {
 
       if (recaptchaResponse) {
         return axios.post('https://www.google.com/recaptcha/api/siteverify', {
-          secret: '6LfqSgsUAAAAANCrfZfLZaPC5y2K-5vKlwP_Wlcl',
+          secret: '6LeZSAsUAAAAANGMs9vrtw-r91r1Eo_aslNaRhuE',
           response: recaptchaResponse,
         })
         .then(response => response);
