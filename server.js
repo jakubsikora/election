@@ -8,9 +8,12 @@ app.get('/', function (req, res) {
   request.post('https://www.google.com/recaptcha/api/siteverify', {
     qs: {
       secret: '6LeZSAsUAAAAANGMs9vrtw-r91r1Eo_aslNaRhuE',
-      response: req.params.recaptchaResponse,
+      response: req.query.recaptchaResponse,
     }
-  }).pipe(res);
+  }, function (err, res, body) {
+    console.log('err', err);
+    console.log('res', res);
+  })
 });
 
 app.listen(port, function () {

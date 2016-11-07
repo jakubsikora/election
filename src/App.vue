@@ -111,7 +111,9 @@ export default {
 
       if (recaptchaResponse) {
         return axios.get('http://recaptcha.jsikora.io', {
-          recaptchaResponse,
+          params: {
+            recaptchaResponse,
+          },
         })
         .then(response => response);
       }
