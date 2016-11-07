@@ -25,7 +25,7 @@
                   <a class='btn' @click="addTrumpVote"><img src='./assets/hex-trump.png' width=100 /></a>
                 </p>
                 <div>
-                  <!-- <div class="g-recaptcha" data-sitekey="6LfqSgsUAAAAAC4TA_XjoxLIQYONmUSXTzACb7VJ"></div> -->
+                  <div class="g-recaptcha" data-sitekey="6LeZSAsUAAAAAKL0L-rbZRzJ-DGEwuz2gtxxZLAj"></div>
                 </div>
               </div>
               <div v-else>
@@ -68,7 +68,6 @@ import firebase from 'firebase';
 import cookies from 'browser-cookies';
 import Chart from 'chart.js';
 import axios from 'axios';
-import 'whatwg-fetch';
 
 // explicit installation required in module environments
 Vue.use(VueFire);
@@ -100,26 +99,21 @@ export default {
       this.addVote('clinton');
     },
     addVote(candidate) {
-      this.voted = true;
-      this.setStorage();
-      votesRef.push(Object.assign({}, { candidate }, this.client));
+      this.validate().then(() => {
+        this.voted = true;
+        // this.setStorage();
+        votesRef.push(Object.assign({}, { candidate }, this.client));
+      });
     },
     validate() {
       const recaptchaResponse = document
         .querySelector('.g-recaptcha-response').value;
 
       if (recaptchaResponse) {
-        return fetch('https://www.google.com/recaptcha/api/siteverify', {
-          credentials: 'include',
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
+        return axios.get('http://recaptcha.jsikora.io', {
+          params: {
+            recaptchaResponse,
           },
-          body: JSON.stringify({
-            secret: '6LfqSgsUAAAAANCrfZfLZaPC5y2K-5vKlwP_Wlcl',
-            response: recaptchaResponse,
-          }),
         })
         .then(response => response);
       }
