@@ -29,7 +29,7 @@
                 </div>
               </div>
               <div v-else>
-                <h3>You already voted.</h3>
+                <h3>Thank you for your vote.</h3>
               </div>
             </div>
           </div>
