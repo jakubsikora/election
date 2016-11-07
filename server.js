@@ -6,8 +6,10 @@ var port = process.env.PORT || 8060;
 
 app.get('/', function (req, res) {
   request.post('https://www.google.com/recaptcha/api/siteverify', {
-    secret: '6LeZSAsUAAAAANGMs9vrtw-r91r1Eo_aslNaRhuE',
-    response: req.params.recaptchaResponse,
+    qs: {
+      secret: '6LeZSAsUAAAAANGMs9vrtw-r91r1Eo_aslNaRhuE',
+      response: req.params.recaptchaResponse,
+    }
   }).pipe(res);
 });
 
