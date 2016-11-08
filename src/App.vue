@@ -235,8 +235,13 @@ body {
 }
 
 header {
-  margin-bottom: -70px;
+  margin-bottom: -50px;
   background-color: #286090;
+  background: linear-gradient(#286090, #1278ce);
+}
+
+h1 {
+  margin: 20px 0;
 }
 
 hr.small {
@@ -278,7 +283,7 @@ hr.small {
 }
 
 .vote-results h4 {
-  color: #ccc;
+  color: #a9a8a8;
 }
 
 .g-recaptcha > div {
@@ -288,11 +293,13 @@ hr.small {
 .results-container .results .clinton-results {
   background-color: #c9302c;
   height: 20px;
+  border-radius: 4px 0px 0px 4px;
 }
 
 .results-container .results .trump-results {
   background-color: #286090;
   height: 20px;
+  border-radius: 0px 4px 4px 0;
 }
 
 .footer {
