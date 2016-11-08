@@ -1,4 +1,4 @@
-<template v-if="ready">
+<template>
   <div id="app">
     <header>
       <div class="container">
@@ -12,53 +12,63 @@
         </div>
       </div>
     </header>
-    <div class="container cast-vote">
-      <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <div v-if="!voted">
-                <h3>Cast your vote</h3>
-                <p>
-                  <a class='btn' @click="addClintonVote"><img src='./assets/hex-clinton.png' width=100 /></a>
-                  <span>or</span>
-                  <a class='btn' @click="addTrumpVote"><img src='./assets/hex-trump.png' width=100 /></a>
-                </p>
-                <div>
-                  <!-- <div class="g-recaptcha" data-sitekey="6LeZSAsUAAAAAKL0L-rbZRzJ-DGEwuz2gtxxZLAj"></div> -->
-                </div>
-              </div>
-              <div v-else>
-                <h3>Thank you for your vote.</h3>
+
+      <div class="container cast-vote">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <form>
+                  <input type="hidden" name="honeypot" id="honeypot" />
+                  <transition name="fade-out1">
+                    <div v-if="loaded">
+                      <div v-if="!voted">
+                        <h3>Cast your vote</h3>
+                        <p>
+                          <a class='btn' @click="addClintonVote"><img src='./assets/hex-clinton.png' width=100 /></a>
+                          <span>or</span>
+                          <a class='btn' @click="addTrumpVote"><img src='./assets/hex-trump.png' width=100 /></a>
+                        </p>
+                      </div>
+                    </div>
+                  </transition>
+                  <transition name="fade">
+                    <div v-if="voted">
+                      <h3>Thank you for your vote.</h3>
+                    </div>
+                  </transition>
+                </form>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </transition>
 
-    <div class="container vote-results">
-      <div class="row">
-        <div class="col-md-12">
-          <h4>Results</h4>
+    <transition name="fade-out">
+      <div class="container vote-results" v-if="ready">
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Results</h4>
+          </div>
+        </div>
+        <div class="results-container">
+          <div>
+            <small>({{ clintonVotes.length }})</small>
+            {{ clintonResults }}
+            <img src='./assets/hex-clinton.png' />
+          </div>
+          <div class="results">
+            <div class="clinton-results" :style="{width: clintonResults }" ></div>
+            <div class="trump-results" :style="{width: trumpResults }"></div>
+          </div>
+          <div>
+            <img src='./assets/hex-trump.png' />
+            {{ trumpResults }} <small>({{ trumpVotes.length }})</small>
+          </div>
         </div>
       </div>
-      <div class="results-container">
-        <div>
-          <small>({{ clintonVotes.length }})</small>
-          {{ clintonResults }}
-          <img src='./assets/hex-clinton.png' />
-        </div>
-        <div class="results">
-          <div class="clinton-results" :style="{width: clintonResults }" ></div>
-          <div class="trump-results" :style="{width: trumpResults }"></div>
-        </div>
-        <div>
-          <img src='./assets/hex-trump.png' />
-          {{ trumpResults }} <small>({{ trumpVotes.length }})</small>
-        </div>
-      </div>
-    </div>
+    </transition>
 
     <footer class="footer">
       <div class="container">
@@ -94,6 +104,7 @@ export default {
   data() {
     return {
       voted: false,
+      loaded: false,
       ready: false,
       trumpResults: '0%',
       clintonResults: '0%',
@@ -109,9 +120,13 @@ export default {
       this.addVote('clinton');
     },
     addVote(candidate) {
-      this.voted = true;
-      this.setStorage();
-      votesRef.push(Object.assign({}, { candidate }, this.client));
+      const honeypot = document.getElementById('honeypot');
+
+      if (!honeypot.value) {
+        this.voted = true;
+        this.setStorage();
+        votesRef.push(Object.assign({}, { candidate }, this.client));
+      }
     },
     validate() {
       const recaptchaResponse = document
@@ -157,10 +172,15 @@ export default {
 
     const loadChart = () => {
       if (clintonLoaded && trumpLoaded) {
+        this.ready = true;
         const allVotes = this.trumpVotes.length + this.clintonVotes.length;
 
-        const trumpPercent = (this.trumpVotes.length / allVotes) * 100;
-        const clintonPercent = (this.clintonVotes.length / allVotes) * 100;
+        const trumpPercent = allVotes
+          ? (this.trumpVotes.length / allVotes) * 100
+          : 0;
+        const clintonPercent = allVotes
+          ? (this.clintonVotes.length / allVotes) * 100
+          : 0;
 
         this.trumpResults = `${trumpPercent.toFixed(2)}%`;
         this.clintonResults = `${clintonPercent.toFixed(2)}%`;
@@ -196,6 +216,7 @@ export default {
       });
 
     this.checkStorage();
+    this.loaded = true;
   },
 };
 </script>
@@ -251,6 +272,7 @@ hr.small {
   width: 100%;
   text-align: center;
   margin-bottom: 50px;
+  opacity: 1;
 }
 
 .vote-results h4 {
@@ -301,6 +323,29 @@ hr.small {
 .footer .container {
   text-align: center;
   padding-top: 14px;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-active {
+  opacity: 0;
+}
+
+.fade-out-enter-active, .fade-out-leave-active {
+  transition: opacity 1s;
+}
+
+.fade-out-enter, .fade-out-leave-active {
+  opacity: 0;
+}
+
+.fade-out1-enter-active, .fade-out1-leave-active {
+  transition: opacity 1.5s;
+}
+
+.fade-out1-enter, .fade-out1-leave-active {
+  opacity: 0;
 }
 
 </style>
