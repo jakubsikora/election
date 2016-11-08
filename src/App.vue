@@ -77,7 +77,7 @@
       <div class="container">
         <iframe src="https://www.facebook.com/plugins/share_button.php?href=http%3A%2F%2Felection2016.me&layout=button_count&size=large&mobile_iframe=true&appId=263717277053356&width=115&height=28" width="115" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
         <a class="twitter-share-button"
-          href="https://twitter.com/intent/tweet?text=Who%20do%20you%20think%20will%20win%20this%20year%20%40realDonaldTrump%20or%20%40HillaryClinton%20%23USElection"
+          href="https://twitter.com/intent/tweet?text=Who%20do%20you%20think%20will%20win%20this%20year%20%40realDonaldTrump%20or%20%40HillaryClinton%20%23USElection%20%23Election2016"
           data-size="large">
           Tweet</a>
       </div>
