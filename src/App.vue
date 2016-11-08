@@ -29,6 +29,7 @@
                           <span>or</span>
                           <a class='btn' @click="addTrumpVote"><img src='./assets/hex-trump.png' width=100 /></a>
                         </p>
+                        <p class="already-voted">Votes already: {{ allVotes }}</p>
                       </div>
                     </div>
                   </transition>
@@ -112,6 +113,7 @@ export default {
       clintonResults: '0%',
       trumpVotes: [],
       clintonVotes: [],
+      allVotes: 0,
     };
   },
   methods: {
@@ -176,7 +178,7 @@ export default {
       if (clintonLoaded && trumpLoaded) {
         this.ready = true;
         const allVotes = this.trumpVotes.length + this.clintonVotes.length;
-
+        this.allVotes = allVotes;
         const trumpPercent = allVotes
           ? (this.trumpVotes.length / allVotes) * 100
           : 0;
@@ -392,6 +394,10 @@ hr.small {
     order: -1;
     margin-right: 5px;
   }
+}
+
+.already-voted {
+  font-size: 0.8em;
 }
 
 </style>
