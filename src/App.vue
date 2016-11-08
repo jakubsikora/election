@@ -38,33 +38,35 @@
                     </div>
                   </transition>
                 </form>
+
+                <transition name="fade-out">
+                  <div class="vote-results" v-if="ready && voted">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <h4>Results</h4>
+                      </div>
+                    </div>
+                    <div class="results-container">
+                      <img class="results-image-clinton" src='./assets/hex-clinton.png' />
+                      <p class="results-text-clinton">
+                        {{ clintonResults }}
+                        <span>({{ clintonVotes.length }})</span>
+                      </p>
+
+                      <div class="results">
+                        <div class="clinton-results" :style="{width: clintonResults }" ></div>
+                        <div class="trump-results" :style="{width: trumpResults }"></div>
+                      </div>
+
+                       <img class="results-image-trump" src='./assets/hex-trump.png' />
+                       <p class="results-text-trump">
+                        {{ trumpResults }} <span>({{ trumpVotes.length }})</span>
+                      </p>
+                    </div>
+                  </div>
+                </transition>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </transition>
-
-    <transition name="fade-out">
-      <div class="container vote-results" v-if="ready">
-        <div class="row">
-          <div class="col-md-12">
-            <h4>Results</h4>
-          </div>
-        </div>
-        <div class="results-container">
-          <div>
-            <small>({{ clintonVotes.length }})</small>
-            {{ clintonResults }}
-            <img src='./assets/hex-clinton.png' />
-          </div>
-          <div class="results">
-            <div class="clinton-results" :style="{width: clintonResults }" ></div>
-            <div class="trump-results" :style="{width: trumpResults }"></div>
-          </div>
-          <div>
-            <img src='./assets/hex-trump.png' />
-            {{ trumpResults }} <small>({{ trumpVotes.length }})</small>
           </div>
         </div>
       </div>
@@ -283,25 +285,6 @@ hr.small {
   margin: 0 auto;
 }
 
-.results-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.results-container img {
-  max-width: 80px;
-  height: auto;
-  max-height: 80px;
-}
-
-.results-container .results {
-  width: 50%;
-  display: flex;
-  justify-content: center;
-}
-
 .results-container .results .clinton-results {
   background-color: #c9302c;
   height: 20px;
@@ -346,6 +329,62 @@ hr.small {
 
 .fade-out1-enter, .fade-out1-leave-active {
   opacity: 0;
+}
+
+.results {
+  display: none;
+}
+
+@media (min-width: 600px) {
+  .results-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .results-container img {
+    max-width: 80px;
+    height: auto;
+    max-height: 80px;
+  }
+
+  .results-container .results {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .results-text-clinton {
+    order: -1;
+  }
+
+  .results-text-clinton, .results-text-trump {
+    flex-shrink: 0;
+    margin: 0;
+  }
+
+  .results-text-clinton span, .results-text-trump span {
+    color: #555;
+    font-size: 0.8em;
+  }
+
+  .results-container > * {
+    margin-left: 5px;
+  }
+
+  .results-container > .results-text-clinton {
+    margin-left: 0;
+  }
+
+  .results-text-clinton {
+    display: flex;
+  }
+
+  .results-text-clinton span {
+    order: -1;
+    margin-right: 5px;
+  }
 }
 
 </style>
