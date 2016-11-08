@@ -25,7 +25,7 @@
                   <a class='btn' @click="addTrumpVote"><img src='./assets/hex-trump.png' width=100 /></a>
                 </p>
                 <div>
-                  <div class="g-recaptcha" data-sitekey="6LeZSAsUAAAAAKL0L-rbZRzJ-DGEwuz2gtxxZLAj"></div>
+                  <!-- <div class="g-recaptcha" data-sitekey="6LeZSAsUAAAAAKL0L-rbZRzJ-DGEwuz2gtxxZLAj"></div> -->
                 </div>
               </div>
               <div v-else>
@@ -59,6 +59,16 @@
         </div>
       </div>
     </div>
+
+    <footer class="footer">
+      <div class="container">
+        <iframe src="https://www.facebook.com/plugins/share_button.php?href=http%3A%2F%2Felection2016.me&layout=button_count&size=large&mobile_iframe=true&appId=263717277053356&width=115&height=28" width="115" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+        <a class="twitter-share-button"
+          href="https://twitter.com/intent/tweet?text=Who%20do%20you%20think%20will%20win%20this%20year%20%40realDonaldTrump%20or%20%40HillaryClinton%20%23USElection"
+          data-size="large">
+          Tweet</a>
+      </div>
+    </footer>
 </template>
 
 <script>
@@ -99,11 +109,9 @@ export default {
       this.addVote('clinton');
     },
     addVote(candidate) {
-      this.validate().then(() => {
-        this.voted = true;
-        // this.setStorage();
-        votesRef.push(Object.assign({}, { candidate }, this.client));
-      });
+      this.voted = true;
+      this.setStorage();
+      votesRef.push(Object.assign({}, { candidate }, this.client));
     },
     validate() {
       const recaptchaResponse = document
@@ -154,8 +162,8 @@ export default {
         const trumpPercent = (this.trumpVotes.length / allVotes) * 100;
         const clintonPercent = (this.clintonVotes.length / allVotes) * 100;
 
-        this.trumpResults = `${parseInt(trumpPercent, 10)}%`;
-        this.clintonResults = `${parseInt(clintonPercent, 10)}%`;
+        this.trumpResults = `${trumpPercent.toFixed(2)}%`;
+        this.clintonResults = `${clintonPercent.toFixed(2)}%`;
       }
     };
 
@@ -235,6 +243,7 @@ hr.small {
 
 .cast-vote .panel-body {
   text-align: center;
+  min-height: 218px;
 }
 
 .vote-results {
@@ -278,6 +287,19 @@ hr.small {
 .results-container .results .trump-results {
   background-color: #286090;
   height: 20px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 56px;
+  background-color: #f5f5f5;
+}
+
+.footer .container {
+  text-align: center;
+  padding-top: 14px;
 }
 
 </style>
