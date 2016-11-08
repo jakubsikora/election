@@ -250,6 +250,7 @@ hr.small {
   background-color: #fff;
   width: 100%;
   text-align: center;
+  margin-bottom: 50px;
 }
 
 .vote-results h4 {
@@ -290,7 +291,7 @@ hr.small {
 }
 
 .footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
   height: 56px;
