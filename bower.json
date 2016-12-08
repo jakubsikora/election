@@ -1,0 +1,18 @@
+{
+  "name": "election",
+  "description": "A Vue.js project",
+  "main": "",
+  "authors": [
+    "Jakub Sikora <jakub.sikora.en@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/jakubsikora/election",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
